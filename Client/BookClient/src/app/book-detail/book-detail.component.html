@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <div class="row">
+    <h1>{{book.title}}</h1>
+  </div>
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="card">
+        <img class="card-img-top img-thumbnail" src="{{book?.photoUrl}}" alt="{{book?.subTitle}}">
+        <div class="card-body">
+          <div>
+            <strong>Publisher:</strong>
+            <p>{{book?.publisher}}</p>
+          </div>
+          <div>
+            <strong>publishedDate</strong>
+            <p>{{book?.publishedDate | date: 'mediumDate'}}</p>
+          </div>
+          <div>
+            <strong>Author</strong>
+            <p>{{book?.authorName}}</p>
+          </div>
+          <div>
+            <strong>Shop</strong>
+            <p>{{shopName}}</p>
+          </div>        
+        </div> <div class="card-footer">
+          <div class="row">
+            <div class="col-md-4">
+              Mobile {{motorbikeCost}} $
+            </div> 
+            <div class="col-md-4">
+              Train {{trainCost}} $
+            </div> 
+            <div class="col-md-4">
+              AIRCRAFT {{airCraftCost}} $
+            </div>        
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="btn-group d-flex">
+            <button class="btn btn-primary w-100">Buy Now</button>        
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="tab-panel">
+        <tabset class="member-tabset" #bookTabs>
+          <tab heading=" {{book?.description}}">
+           
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="container mt-3">
+
+<div class="container mt-5">
+     
+       <form class="form-inline" #form="ngForm" (ngSubmit)="loadBooks()" novalidate>
+        <div class="form-group">    
+          <input type="text" class="form-control" style="width: 400px" id="Search" maxlength="200"
+            [(ngModel)]="command.Query" name="Query" placeholder="Search by book title or author">
+        </div>       
+        <button type="submit" class="btn btn-primary" style="margin-left:10px">Search</button>             
+      </form> 
+      <br>        
+  <div class="clearfix">
+    <div class="row">
+    <div *ngFor="let book of books" class="ccol-lg-3 col-md-3 col-sm-3 col-sx-12 box-item">
+      <app-book-card [book]="book"></app-book-card>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+
+<div class="d-flex justify-content-center">
+<pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [(ngModel)]="pagination.currentPage"
+    [itemsPerPage]="pagination.itemsPerPage"
+    (pageChanged)="pageChanged($event)"
+  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+</pagination>
+    
+</div>
+
