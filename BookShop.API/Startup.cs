@@ -63,7 +63,7 @@ namespace BookShop.API
               {                  
                   contextOptionsBuilder.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
                   //As we have many databases in the system
-                  contextOptionsBuilder.ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning));
+                  //contextOptionsBuilder.ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning));
               });
 
             //services.AddBookShopServices("BookShop.Domain","BookShop.Infrastructure");

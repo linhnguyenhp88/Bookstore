@@ -45,7 +45,7 @@ namespace BookShop.Infrastructure.Services
         /// <returns></returns>
         public async Task<PagedList<Book>> GetBooksAsync(BookPagingFilteringModel commandQuery)
         {
-            _logger.LogInformation($"Begining query all book records = {commandQuery}");
+            _logger.LogInformation($"Begining query all book records =  {commandQuery}");
             var mainQuery = _bookRepository.Query().Include(b => b.Author).Include(b => b.Photos).AsQueryable();
             try
             {            
