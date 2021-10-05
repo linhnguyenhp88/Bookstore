@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>0b870645-e1f6-45a1-ad16-61ddfa5ae3ea</ProjectGuid>
+    <ProjectGuid>e3311d2d-5a5d-4644-97e9-b9cb5510d8c7</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api/values</DockerServiceUrl>
     <DockerServiceName>bookshop.api</DockerServiceName>

@@ -1,32 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using BookShop.Domain.DbContexts;
 using BookShop.Domain.Entities;
 using BookShop.Domain.SeedData;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using BookShop.Domain.Repository;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using BookShop.Infrastructure.ExtensionMethods;
-using Microsoft.AspNetCore.Http;
-using BookShop.Domain.Interfaces.IServices;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Diagnostics;
 using BookShop.Infrastructure.Services;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using BookShop.Domain.Interfaces.IServices;
 using BookShop.Domain.Interfaces.IRepository;
-using BookShop.Domain.Repository;
+using Microsoft.Extensions.DependencyInjection;
+using BookShop.Infrastructure.ExtensionMethods;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AWS.Logger;
 
 namespace BookShop.API
 {
@@ -53,18 +54,27 @@ namespace BookShop.API
                       });
             });
 
-            services.AddDbContext<BookShopContext>( // entity framework DbContext, the default lifetime is 'scoped'
+            //Getting configs for AWS CloudWatch
+            services.Configure<AWSLoggerConfig>(Configuration.GetSection("AWSLoggerConfig"));
+
+            // prepare register dependency injection
+            services.AddDbContext<BookShopContext>( // entity framework core DbContext, the default lifetime is 'scoped'
               contextOptionsBuilder =>
               {                  
-                    contextOptionsBuilder.UseMySql(Configuration.GetConnectionString("DefaultConnection"));                 
+                  contextOptionsBuilder.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+                  //As we have many databases in the system
+                  contextOptionsBuilder.ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning));
               });
 
             //services.AddBookShopServices("BookShop.Domain","BookShop.Infrastructure");
+            services.AddLogging(); // logging: this is equipvalent to .AddSingleton<ILoggingFactory, LoggingFactory>()
+            services.AddScoped<ILoggingService, LoggingService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<IDeliveryService, DeliveryService>();
             services.AddAutoMapper();
+
             // Implement oath2
             IdentityBuilder build = services.AddIdentityCore<User>(opt =>
             {

@@ -8,6 +8,7 @@ using BookShop.Domain.Dtos;
 using BookShop.Domain.Interfaces.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BookShop.API.Controllers
 {
@@ -17,10 +18,15 @@ namespace BookShop.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IBooksService _booksService;
-        public BooksController(IBooksService booksService, IMapper mapper)
+        private readonly ILogger _logger;
+        public BooksController(IBooksService booksService, IMapper mapper, ILoggingService loggingService)
         {
             _booksService = booksService;
             _mapper = mapper;
+            if(loggingService != null)
+            {
+                _logger = loggingService.CreateLogger<BooksController>();
+            }          
         }
 
         [HttpGet]      
@@ -48,6 +54,8 @@ namespace BookShop.API.Controllers
 
             Response.AddPagination(bookEntities.CurrentPage, bookEntities.PageSize,
                 bookEntities.TotalCount, bookEntities.TotalPages);
+
+            _logger.LogInformation($"Get-all-books API  {result}");
 
             return Ok(result);
         }

@@ -1,10 +1,15 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
+FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
 COPY ["BookShop.API/BookShop.API.csproj", "BookShop.API/"]
+COPY ["BookShop.Infrastructure/BookShop.Infrastructure.csproj", "BookShop.Infrastructure/"]
+COPY ["BookShop.Domain/BookShop.Domain.csproj", "BookShop.Domain/"]
+COPY ["BookShop.Common/BookShop.Common.csproj", "BookShop.Common/"]
 RUN dotnet restore "BookShop.API/BookShop.API.csproj"
 COPY . .
 WORKDIR "/src/BookShop.API"

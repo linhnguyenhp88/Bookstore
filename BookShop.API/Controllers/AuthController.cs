@@ -41,7 +41,7 @@ namespace BookShop.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
         {
-            //throw new Exception("Computer says no");
+            // check validation form
             if (ModelState.IsValid)
             {
                 //Check is active user
@@ -67,6 +67,11 @@ namespace BookShop.API.Controllers
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Generate an access token to client
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private string GenerateJwtToken(User user)
         {
             var claims = new List<Claim>
